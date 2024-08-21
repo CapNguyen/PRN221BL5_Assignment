@@ -1,0 +1,54 @@
+﻿@page
+@model Assignment_Project.Pages.AddModel
+@using Assignment_Project.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<h1>
+    Add Lesson
+</h1>
+
+<div>
+    <form method="p<a href="c:\study\prn221_bl5\assignment\assignment_project\pages\_viewimports.cshtml">
+        c:\study\prn221_bl5\assignment\assignment_project\pages\_viewimports.cshtml</a>
+        <a href="c:\study\prn221_bl5\assignment\assignment_project\pages\_viewstart.cshtml">c:\study\prn221_bl5\assignment\assignment_project\pages\_viewstart.cshtml</a>
+        <a href="c:\study\prn221_bl5\assignment\assignment_project\pages\add.cshtml">c:\study\prn221_bl5\assignment\assignment_project\pages\add.cshtml</a>
+        <a href="c:\study\prn221_bl5\assignment\assignment_project\pages\add.cshtml.cs">c:\study\prn221_bl5\assignment\assignment_project\pages\add.cshtml.cs</a>ost">
+        <label>Subject:</label>
+        <input type="text" name="subject" />
+        <br />
+        <label>Teacher:</label>
+        <input type="text" name="teacher" />
+        <br />
+        <label>Class:</label>
+        <input type="text" name="class" />
+        <br />
+        <label>Room:</label>
+        <input type="text" name="room" />
+        <br />
+        <label>Weekday:</label>
+        <select name="weekDay">
+            @foreach (KeyValuePair<int, string> wd in Model.WeekDays)
+            {
+                <option value="@wd.Key">@wd.Value</option>
+            }
+        </select>
+        <br />
+        <label>Week:</label>
+        <input type="text" name="week" />
+        <br />
+        <label>Slot:</label>
+        <select name="timeslotId">
+            @if (Model.TimeSlots != null)
+            {
+                @foreach (TimeSlot ts in Model.TimeSlots)
+                {
+                    <option value="@ts.Id">@ts.Slot - (@ts.Time)</option>
+                }
+            }
+        </select>
+        <br />
+        <button type="submit">Add</button>
+        <br />
+        <button><a style="text-decoration:none;color:black" href="/Schedule">Schedule</a></button>
+    </form>
+</div>
+

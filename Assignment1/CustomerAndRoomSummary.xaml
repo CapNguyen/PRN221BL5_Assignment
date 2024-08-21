@@ -1,0 +1,29 @@
+﻿<Window x:Class="Assignment1.CustomerAndRoomSummary"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Assignment1"
+                xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=DotNetProjects.DataVisualization.Toolkit"
+
+        mc:Ignorable="d"
+        Title="CustomerAndRoomSummary" Height="450" Width="800">
+    <Grid>
+        <Label Content="Customer And Room Analyze"  HorizontalAlignment="Center" FontSize="20"></Label>
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,49,0,0">
+            <Label Content="From"></Label>
+            <DatePicker x:Name="dateFrom" Width="200" SelectedDateChanged="dateSelectedDateChanged"></DatePicker>
+            <Label Content="To"></Label>
+            <DatePicker x:Name="dateTo" Width="200" SelectedDateChanged="dateSelectedDateChanged"></DatePicker>
+
+        </StackPanel>
+        <DVC:Chart Name="Analysis"  LegendTitle="Number of Customer" Margin="0,45,0,0">
+            <DVC:Chart.Series>
+                <DVC:ColumnSeries Title="Room Type" 
+                  IndependentValueBinding="{Binding Path=Key}"
+                  DependentValueBinding="{Binding Path=Value}">
+                </DVC:ColumnSeries>
+            </DVC:Chart.Series>
+        </DVC:Chart>
+    </Grid>
+</Window>

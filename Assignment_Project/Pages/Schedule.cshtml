@@ -1,0 +1,110 @@
+﻿@page "/{handler?}"
+@model Assignment_Project.Pages.ScheduleModel
+@using Assignment_Project.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h1 class="text-center my-4">Timetable</h1>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <form method="post" asp-page-handler="Filter" id="form" class="form-inline">
+                <div class="form-group mr-3 mb-2">
+                    <label for="weekSelect" class="mr-2">Week:</label>
+                    <select name="Week" asp-for="Week" id="weekSelect" class="form-control">
+                        @foreach (int w in Model.Weeks)
+                        {
+                            <option value="@w">Week @w</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group mr-3 mb-2">
+                    <label for="daySelect" class="mr-2">Weekday:</label>
+                    <select name="WeekDay" asp-for="WeekDay" id="daySelect" class="form-control">
+                        @foreach (KeyValuePair<int, string> wd in Model.WeekDays)
+                        {
+                            <option value="@wd.Key">@wd.Value</option>
+                        }
+                    </select>
+                </div>
+                <input type="submit" value="Filter" class="btn btn-primary mb-2" />
+            </form>
+        </div>
+        <div class="col-md-4 text-md-right">
+            <a href="/Add" class="btn btn-success mb-2">Add By Form</a>
+            <form method="post" enctype="multipart/form-data" class="form-inline">
+                <div class="form-group">
+                    <input type="file" name="csvFile" class="form-control-file mr-2" />
+                    <input type="submit" value="Add by file" class="btn btn-info" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        @if (Model.Lessons == null || Model.Lessons.Count == 0)
+        {
+            <div class="alert alert-warning text-center">There is no lesson this week/weekday</div>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Room</th>
+                        @foreach (TimeSlot t in Model.TimeSlots)
+                        {
+                            <th class="text-center">
+                                <span>Slot @t.Slot</span>
+                                <br />
+                                <small>(@t.Time)</small>
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (string r in Model.Rooms)
+                    {
+                        <tr>
+                            <td>@r</td>
+                            @foreach (TimeSlot t in Model.TimeSlots)
+                            {
+                                var lesson = Model.Lessons.FirstOrDefault(l => l.Room == r && l.TimeslotId == t.Id);
+                                if (lesson != null)
+                                {
+                                    <td class="text-center">
+                                        <a href="/Detail/@lesson.Id" class="text-dark text-decoration-none">
+                                            <strong>@lesson.Class</strong>
+                                            <br />
+                                            @lesson.Subject
+                                            <br />
+                                            <small>@lesson.Teacher</small>
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">-</td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<script>
+    var form = document.getElementById("form");
+    var week = document.getElementById("weekSelect");
+    var day = document.getElementById("daySelect");
+
+    week.addEventListener("change", function () {
+        form.submit();
+    });
+
+    day.addEventListener("change", function () {
+        form.submit();
+    });
+</script>

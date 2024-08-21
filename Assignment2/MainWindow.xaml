@@ -1,0 +1,47 @@
+﻿<Window x:Class="Assignment2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Client Application" Height="450" Width="800">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical" Width="391">
+                <Label Content="Client Application" HorizontalAlignment="Center" FontSize="20"></Label>
+                <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Left">
+                    <Label Content="Username"></Label>
+                    <TextBox x:Name="UsernameTextBox"  Width="150" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Left" Margin="0,20,0,0">
+                    <Label Content="Password"></Label>
+                    <TextBox x:Name="PasswordTextBox"  Width="150" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  Margin="50,20,0,0">
+                    <Button Content="Connect" HorizontalAlignment="Left" Width="150" Click="ConnectButton_Click"/>
+                    <Label x:Name="lbLogin" Content=""/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Width="500" HorizontalAlignment="Left" Margin="0,20,0,0">
+                    <Label Content="Message"></Label>
+                    <TextBox x:Name="MessageTextBox"  Width="300" IsEnabled="False"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                <Button x:Name="btnSend" Content="Send" Margin="50,20,0,0"  Width="150" HorizontalAlignment="Left" IsEnabled="False" Click="SendButton_Click"/>
+                    <Button x:Name="btnLoad" Width="150" Margin="10,20,0,0"  Content="Load Messages"  IsEnabled="False" Click="Load_Click" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Messages" HorizontalAlignment="Center"></Label>
+                <ListBox x:Name="listBoxMessages" Width="398" Height="406" ItemsSource="{Binding ReceiveMessageList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,18 @@
+﻿@page "/Login"
+@model Login
+<div>
+    <h1>Login</h1>
+    <form method="post">
+        <label for="username">Username</label>
+        <br />
+        <input type="text" asp-for="Request.Username" required />
+        <br />
+        <label for="password">Password</label>
+        <br />
+        <input type="password" asp-for="Request.Password" required />
+        <br />
+        <input type="submit" value="Login" />
+        <p>@TempData["CheckLogin"]</p>
+    </form>
+    <a href="./SignUp">Register new account</a>
+</div>

@@ -1,0 +1,157 @@
+﻿@page
+@model Assignment3.Pages.Events.ListModel
+
+<h1>Event List</h1>
+<div>
+    <form method="post" asp-page-handler="Load" id="Filter_Sort_Paging" class="p-3 border rounded bg-light">
+        <div class="form-row align-items-end mb-3">
+            <div class="form-group col-md-6">
+                <label for="Search" class="font-weight-bold">Search</label>
+                <input type="text" id="search" name="title_location_description" asp-for="Title_Location_Description" class="form-control" placeholder="Enter title,location or description" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="Category" class="font-weight-bold">Category</label>
+                <select id="category" name="categoryId" asp-for="CategoryId" class="form-control">
+                    <option value="">All Categories</option>
+                    @foreach (var c in Model.Categories)
+                    {
+                        <option value="@c.CategoryId">@c.CategoryName</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row align-items-end mb-3">
+            <div class="form-group col-md-6">
+                <label for="from" class="font-weight-bold">From:</label>
+                <input type="date" name="from" asp-for="From" class="form-control" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="to" class="font-weight-bold">To:</label>
+                <input type="date" name="to" asp-for="To" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-row align-items-end mb-3">
+            <div class="form-group col-md-6">
+                <label for="pageIndex" class="font-weight-bold">Page:</label>
+                <select name="pageIndex" id="pageIndex" asp-for="PageIndex" class="form-control">
+                    @for (int i = 1; i <= Model.TotalPage; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="pageSize" class="font-weight-bold">Number of Orders per page:</label>
+                <select name="pageSize" id="pageSize" asp-for="PageSize" class="form-control">
+                    @foreach (int p in Model.PagingSize)
+                    {
+                        <option value="@p">@p</option>
+                    }
+                </select>
+            </div>
+        </div>
+        @if (Model.UserRole == "Organizer")
+        {
+            <div style="display:flex;justify-content:space-between">
+
+                <a href="/Events/Add" class="btn btn-sm btn-primary">Add Event</a>
+            </div>
+        }
+
+    </form>
+</div>
+<div>
+    @if (TempData["DeleteStatus"] != null)
+    {
+        <div class="alert alert-success" id="status">
+            @TempData["DeleteStatus"]
+        </div>
+    }
+    @if (Model.Events == null || Model.Events.Count == 0)
+    {
+        <h3>There is no event</h3>
+    }
+    else
+    {
+        <table class="table table-striped table-bordered">
+            <tr>
+                <th>No</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>StartTime</th>
+                <th>EndTime</th>
+                <th>Location</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+
+            @{
+                int count = 0;
+            }
+            @foreach (var e in Model.Events)
+            {
+                count++;
+                <tr>
+                    <td>@count</td>
+                    <td>@e.Title</td>
+                    <td>@e.Description</td>
+                    <td>@(e.StartTime.HasValue ? e.StartTime.Value.ToString("dd/MM/yyyy") : "-")</td>
+                    <td>@(e.EndTime.HasValue ? e.EndTime.Value.ToString("dd/MM/yyyy") : "-")</td>
+                    <td>@e.Location</td>
+                    <td>@(e.Category?.CategoryName ?? "-")</td>
+                    <td style="display: flex;justify-content: space-around;">
+                        @if (Model.UserRole == "Organizer")
+                        {
+                            <a href="/Events/Update/@e.EventId" class="btn btn-sm btn-primary">Update</a>
+                            <form method="post" asp-page-handler="Delete">
+                                <input type="hidden" asp-for="EventId" value="@e.EventId" />
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this event?');">
+                                    Delete
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a href="/Events/Register/@e.EventId" class="btn btn-sm btn-primary">Register</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+
+    }
+</div>
+
+<script>
+    var form = document.getElementById("Filter_Sort_Paging")
+    var pageIndex = document.getElementById("pageIndex");
+    var pageSize = document.getElementById("pageSize");
+    var category = document.getElementById("category");
+    var search = document.getElementById("search");
+    // search.addEventListener("input", function () {
+    //     search.value.trim();
+    //     form.submit();
+    // });
+    category.addEventListener("change", function () {
+        form.submit();
+    });
+    pageIndex.addEventListener("change", function () {
+        form.submit();
+    });
+    pageSize.addEventListener("change", function () {
+        pageIndex.selectedIndex = 0;
+        form.submit();
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            var div = document.getElementById('status');
+            div.style.display = 'none';
+        }, 10000);
+    });
+</script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/js/site.js"></script>

@@ -1,0 +1,85 @@
+﻿@page "/Detail/{lessonId:int?}"
+@model Assignment_Project.Pages.DetailModel
+@using Assignment_Project.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<h1>Lesson Detail</h1>
+@if (Model.Lesson != null)
+{
+    <div>
+        <table border="1">
+            <tr>
+                <th>Class</th>
+                <td>@Model.Lesson.Class</td>
+            </tr>
+            <tr>
+                <th>Subject</th>
+                <td>@Model.Lesson.Subject</td>
+            </tr>
+            <tr>
+                <th>Teacher</th>
+                <td>@Model.Lesson.Teacher</td>
+            </tr>
+            <tr>
+                <th>Room</th>
+                <td>@Model.Lesson.Room</td>
+            </tr>
+            <tr>
+                <th>Slot</th>
+                <td>@Model.Lesson.TimeslotId</td>
+            </tr>
+        </table>
+    </div>
+    <hr />
+    <div>
+        <form method="post">
+            <br />
+            <label>Class</label>
+            <input type="text" name="class" value="@Model.Lesson.Class" asp-for="Class" />
+            <br />
+            <label>Subject</label>
+            <input type="text" name="subject" value="@Model.Lesson.Subject" asp-for="Subject" />
+            <br />
+            <label>Teacher</label>
+            <input type="text" name="teacher" value="@Model.Lesson.Teacher" asp-for="Teacher" />
+            <br />
+            <label>Room</label>
+            <input type="text" name="room" value="@Model.Lesson.Room" asp-for="Room" />
+            <br />
+            <label>Slot</label>
+            <select name="timeslotId" value="@Model.Lesson.TimeslotId" asp-for="TimeSlotId">
+                @foreach (TimeSlot t in Model.TimeSlots)
+                {
+                    if (t.Id == Model.Lesson.TimeslotId)
+                    {
+                        <option value="@t.Id" selected>@t.Slot _ (@t.Time)</option>
+                    }
+                    else
+                    {
+                        <option value="@t.Id">@t.Slot _ (@t.Time)</option>
+                    }
+                }
+            </select>
+            <br />
+            <input type="text" name="id" value="@Model.Lesson.Id" asp-for="Id" hidden />
+            <input type="text" name="week" value="@Model.Lesson.Week" asp-for="Week" hidden />
+            <input type="text" name="weekday" value="@Model.Lesson.Weekday" asp-for="WeekDay" hidden />
+            <input type="submit" value="Edit" />
+        </form>
+    </div>
+    <div>
+        <form method="post" id="deleteForm" asp-page-handler="Delete">
+            <input type="text" name="id" value="@Model.Lesson.Id" hidden/>
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+    <button><a style="text-decoration:none;color:black" href="/Schedule">Schedule</a></button>
+
+}
+<script>
+    document.getElementById('deleteForm').addEventListener('submit', function (event) {
+        var confirmation = confirm('Want to delete this lesson :D ?');
+        if (!confirmation) {
+            event.preventDefault();
+        }
+    });
+</script>

@@ -1,0 +1,35 @@
+﻿@page "/Events/Register/{eventId:int?}"
+@model Registration
+
+<h1>Register for Event</h1>
+
+<form method="post">
+    <input type="hidden" name="Attendee.EventId" value="@Model.Event.EventId" />
+    <input type="hidden" name="Attendee.UserId" value="@Model.User.UserId" />
+
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="Attendee.Name" value="@Model.User.FullName" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="Attendee.Email" value="@Model.User.Email" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="registrationTime">Registration Time:</label>
+        <input type="datetime-local" id="registrationTime" name="Attendee.RegistrationTime" value="@Model.Attendee.RegistrationTime?.ToString("yyyy-MM-ddTHH:mm:ss")" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="title">Event Title:</label>
+        <input type="text" id="title" name="Event.Title" value="@Model.Event.Title" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Register" class="btn btn-primary" />
+    </div>
+</form>
+
+<h2>@TempData["Check"]</h2>
